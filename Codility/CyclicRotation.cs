@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Codility
 {
@@ -51,16 +52,36 @@ namespace Codility
     {
         public CyclicRotation(int[] A, int K)
         {
-            var newArray = new int[A.Length];
+
+            if(A == null || A.Length ==0)
+                return;
+
+            var result = new int[A.Length];
+
+            int index = Step(K, A.Length);
+
+
+            if (A.Length == 1 || index == 0)
+                result = A;
+
             for (int i = 0; i < A.Length; i++)
             {
-                if ((i + K) < newArray.Length)
-                    newArray[i + K] = A[i];
+                if (i + index < A.Length)
+                    result[i + index] = A[i];
                 else
-                    newArray[i - (A.Length - K)] = A[i];
+                    result[i - (A.Length - index)] = A[i];
             }
 
-            Console.WriteLine(string.Join("," ,newArray));
+            Console.WriteLine(string.Join(",", result));
+
+            int Step(int k, int l)
+            {
+                if (k < l)
+                    return k;
+                return Step(k - l, l); ;
+            }
         }
+
+
     }
 }
